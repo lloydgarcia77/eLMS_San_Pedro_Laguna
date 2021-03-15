@@ -3,16 +3,16 @@ from elegislative_app import models
 from import_export.admin import ImportExportModelAdmin  
 from django.contrib.auth.admin import UserAdmin
 from django import forms
+
 admin.site.site_header = 'e-Legislative Super Administrator'
 admin.site.index_title = 'Super Administrator Page'
 admin.site.site_title = 'Super Administrator Panel'
 admin.site.site_url = "/elegislative/dashboard/"
-<<<<<<< HEAD
+
   
 # Custom user model and admin
-=======
- # Custom user model and admin
->>>>>>> 07d2935e7c82f6a4bd47cbec067c196153d0b170
+# Custom user model and admin
+
 # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#custom-users-admin-full-example
 # Change password
 # https://docs.djangoproject.com/en/3.1/topics/auth/default/
@@ -26,11 +26,6 @@ admin.site.register(models.User)
 #     add_fieldsets = ()
 # # admin.site.unregister(models.User)
 # admin.site.register(models.User, CustomUserAdmin)
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 07d2935e7c82f6a4bd47cbec067c196153d0b170
 
 class AgendaAdmin(ImportExportModelAdmin):
     list_display = ("id","no","title","version","author","is_delete","status","is_signed","hard_copy","content","date_filed")

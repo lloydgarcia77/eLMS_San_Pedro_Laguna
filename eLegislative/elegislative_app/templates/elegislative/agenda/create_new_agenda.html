@@ -112,11 +112,14 @@ e-Legislative Manage Agenda
  
 <script>
     $(document).ready(function () {
-        $(function () { 
+        $(function () {  
             //Add text editor
             //$("#compose-textarea").wysihtml5();
             CKEDITOR.replace('compose_textarea');  
-            CKEDITOR.config.extraPlugins = 'justify, lineheight';
+            CKEDITOR.config.extraPlugins = 'justify, lineheight, font, liststyle, colorbutton';
+            CKEDITOR.addStylesSet('default',[
+                    {name :'Roman',element:'ol',attributes:{type:'I'}}
+                    ]);
             //Getting the value of ckeditor
             //var editor_data = CKEDITOR.instances.compose_textarea.getData();
             //console.log(editor_data);
