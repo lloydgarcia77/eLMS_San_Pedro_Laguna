@@ -163,3 +163,15 @@ class OldDocumentsAdmin(ImportExportModelAdmin):
     list_filter = ("year", "content_type",)
 
 admin.site.register(models.OldDocumentsModel, OldDocumentsAdmin)
+
+
+
+class AudioRecordingAdmin(ImportExportModelAdmin):
+    list_display = ("id", "audio_file", "name", "description", "remarks", "size", "length", "date_uploaded")
+    list_editable = (  "audio_file", "name", "description", "remarks", "size", "length",)
+    list_per_page = 10
+    search_field = ("id", "name", "description", "remarks", "size", "length", "date_uploaded")
+    list_filter = ("date_uploaded",)
+
+admin.site.register(models.AudioRecording, AudioRecordingAdmin)
+

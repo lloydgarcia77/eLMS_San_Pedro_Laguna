@@ -712,6 +712,35 @@ class AnnouncementForm(forms.ModelForm):
             'required': 'required',
         }
  
+class AudioRecordingForm(forms.ModelForm):
+    class Meta:
+        model = models.AudioRecording
+        exclude = ("audio_file", "date_uploaded", "size", "length",)
+    
+    def __init__(self, *args, **kwargs):
+        super(AudioRecordingForm, self).__init__(*args, **kwargs)
+
+        self.fields['name'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Name',
+            'required': 'required',
+        }
+
+        self.fields['description'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Description',
+            'required': 'required',
+        } 
+        self.fields['remarks'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Remarks',
+            'required': 'required',
+        } 
+
+
 class MessageForm(forms.ModelForm):
     class Meta:
         model = models.MessagesModel
@@ -720,6 +749,7 @@ class MessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(MessageForm, self).__init__(*args, **kwargs)
 
+   
         self.fields['subject'].widget.attrs = {
             'type': 'text',
             'class': 'form-control',

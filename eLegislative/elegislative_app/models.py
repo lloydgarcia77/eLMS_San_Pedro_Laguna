@@ -406,3 +406,20 @@ class OldDocumentsModel(models.Model):
 
     def __str__(self):
         return self.name
+
+class AudioRecording(models.Model):
+    audio_file = models.FileField(upload_to="audio/%Y/%m/%d")
+    name = models.CharField(max_length=250)
+    description = models.CharField(max_length=250)
+    remarks = models.CharField(max_length=250)
+    size = models.CharField(max_length=250)
+    length = models.CharField(max_length=250)
+    date_uploaded = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('-id',)
+    
+    def __str__(self):
+        return self.name
+    
+    # def get_absolute_url(self):

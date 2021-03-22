@@ -31,8 +31,13 @@ from django.core.exceptions import FieldDoesNotExist, FieldError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger 
 from django.contrib import messages 
 # Create your views here.
-
+# Saving audio to the database and getting all the details
+from django.core.files.base import ContentFile
+import scipy
+from scipy.io import wavfile
 import os
+
+from django.conf import settings
 
 # key id encryption
 def encrypt_key(txt):
@@ -2394,7 +2399,8 @@ def delete_webex_link(request, *args, **kwargs):
 def trash(request, *args, **kwargs):
     template_name = "elegislative/trash/trash.html"
     user = get_object_or_404(models.User, email=request.user.email) 
-
+    
+    print(settings.DATA_UPLOAD_MAX_MEMORY_SIZE )    
     model_list = [
         models.AgendaModel,
         models.ResolutionModel,
@@ -2493,18 +2499,83 @@ def restore_deleted(request, *args, **kwargs):
 """
 [START] -> Audio Recording features
 """
+
 @login_required 
 @authorize 
 @get_notification
 def audio_recording(request, *args, **kwargs):
     template_name = "elegislative/audio_recording/audio_recording.html"
     user = get_object_or_404(models.User, email=request.user.email) 
+ 
     context = {
         'user': user, 
         'notifications':kwargs['notifications'],
     }    
     return render(request, template_name, context)
 
+def output_duration(length): 
+    hours = length // 3600  # calculate in hours 
+    length %= 3600
+    mins = length // 60  # calculate in minutes 
+    length %= 60
+    seconds = length  # calculate in seconds 
+  
+    return hours, mins, seconds 
+
+def get_file_size(base64String):
+    return (len(base64String) * 3) / 4 - base64String.count('=', -2)
+@login_required 
+@authorize 
+@get_notification
+def create_audio_recording(request, *args, **kwargs):
+    template_name = "elegislative/audio_recording/create_new_audio_recording.html"
+    user = get_object_or_404(models.User, email=request.user.email) 
+    if request.method == 'GET':
+        form = forms.AudioRecordingForm(request.GET or None)
+
+    elif request.method == "POST":
+        form = forms.AudioRecordingForm(request.POST or None)
+
+        if form.is_valid(): 
+            instance = form.save(commit=False) 
+            audio_base64 = request.POST.get('audio_base64', None) 
+            format, audio_string = audio_base64.split(";base64,")
+            ext = format.split('/')[-1] 
+            audio_file = ContentFile(base64.b64decode(audio_string), name='audio.'+ext)
+            file_size = get_file_size(audio_string) 
+            instance.audio_file = audio_file
+            instance.size = file_size
+            sample_rate, data = wavfile.read(audio_file)
+            len_data = len(data) # holds length of the numpy array
+            total = len_data / sample_rate # returns duration but in float
+            hours, mins, seconds = output_duration(int(total)) 
+            instance.length = f'Total Duration: {hours}:{mins}:{seconds}' 
+            instance.save()  
+            return HttpResponseRedirect(reverse("elegislative:audio_recording"))
+        # https://www.geeksforgeeks.org/how-to-get-the-duration-of-audio-in-python/  
+        """
+        f = request.POST.get('data','None')    
+        fformat, audiostr = f.split(';base64,') 
+        ext = fformat.split('/')[-1]  
+        data = ContentFile(base64.b64decode(audiostr), name='temp.' + ext) 
+        # sample_rate holds the sample rate of the wav file 
+        # in (sample/sec) format 
+        # data is the numpy array that consists 
+        # of actual data read from the wav file 
+        sample_rate, d = wavfile.read(data)  
+        len_data = len(d)  # holds length of the numpy array  
+        t = len_data / sample_rate  # returns duration but in floats  
+        hours, mins, seconds = output_duration(int(t)) 
+        print('Total Duration: {}:{}:{}'.format(hours, mins, seconds)) 
+        x = models.AudioRecording.objects.create(audio_file=data, name="test", description="tets", remarks="test", size="test", length="test") 
+        """
+
+    context = {
+        'user': user, 
+        'form': form,
+        'notifications':kwargs['notifications'],
+    }    
+    return render(request, template_name, context)
 
 """
 [END] -> Audio Recording features
