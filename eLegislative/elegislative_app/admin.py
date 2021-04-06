@@ -175,3 +175,15 @@ class AudioRecordingAdmin(ImportExportModelAdmin):
 
 admin.site.register(models.AudioRecording, AudioRecordingAdmin)
 
+
+class OrderOfBusinessAdmin(ImportExportModelAdmin):
+    list_display = ("id","no","slug","title","version","author","is_delete","status","is_signed","hard_copy","content","date_filed")
+    list_editable = ("no","slug","title","version","author","is_delete","status","is_signed","hard_copy","content",)
+    list_per_page = 10
+    search_fields = ("id","no","slug","title","version","author","status","content","date_filed")
+    list_filter = ("author","status","is_signed",)
+    prepopulated_fields = {'slug': ('no',)}
+    date_hierarchy = 'date_filed'
+    ordering = ["no", "version", "author"]
+
+admin.site.register(models.OrderOfBusiness, OrderOfBusinessAdmin)

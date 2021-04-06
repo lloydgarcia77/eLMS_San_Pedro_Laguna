@@ -10,7 +10,12 @@ e-Legislative Audio Recording
 {% block additional_css %}
 <!-- DataTables -->
 <link rel="stylesheet" href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
- 
+<style>
+    table td {
+        text-align: center;
+        vertical-align: middle !important;
+    }
+</style>
 {% endblock additional_css %}
 
 <!-- navigation -->
@@ -63,13 +68,53 @@ e-Legislative Audio Recording
                         {% if not user.is_view_mode %}
                         <div class="box-tools">
                             <ul class="pagination pagination-sm no-margin pull-right">
-                                <li><a href="{% url 'elegislative:create_audio_recording' %}" data-toggle="tooltip" title="Create new audio recording"><i class="fa fa-fw fa-plus"></i>Create new audio recording</a></li>
+                                <li><a href="{% url 'elegislative:create_audio_recording' %}" data-toggle="tooltip"
+                                        title="Create new audio recording"><i class="fa fa-fw fa-plus"></i>Create new
+                                        audio recording</a></li>
                             </ul>
                         </div>
                         {% endif %}
                     </div>
                     <div class="box-body">
-                       
+                        <table id="table_audio_recording" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 5%;">ID</th>
+                                    <th class="text-center" style="width: 10%;">Name</th>
+                                    <th class="text-center" style="width: 15%;">Description</th>
+                                    <th class="text-center" style="width: 5%;">Remarks</th>
+                                    <th class="text-center" style="width: 5%;">Size</th>
+                                    <th class="text-center" style="width: 10%;">Length</th>
+                                    <th class="text-center" style="width: 10%;">Date Uploaded</th>
+                                    <th class="text-center" style="width: 20%;">Playback</th>
+                                    <th class="text-center" style="width: 10%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in audio %}
+                                <tr>
+                                    <td>{{ a.id }}</td>
+                                    <td>{{ a.name }}</td>
+                                    <td>{{ a.description }}</td>
+                                    <td>{{ a.remarks }}</td>
+                                    <td>{{ a.size }}</td>
+                                    <td>{{ a.length }}</td>
+                                    <td>{{ a.date_uploaded }}</td>
+                                    <td>
+                                        <audio controls>
+                                            <source src="{{ a.audio_file.url }}" type="audio/wav">
+                                        </audio>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-warning btn-flat btn-edit" data-toggle="tooltip" title="Edit" data-url=""><i class="fa fa-edit"></i></button>
+                                            <button type="button" class="btn btn-danger btn-flat btn-delete" data-toggle="tooltip" title="Delete" data-url=""><i class="fa fa-trash"></i></button>                                                
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -80,9 +125,9 @@ e-Legislative Audio Recording
 
 <!-- Javascript -->
 
-{% block additional_js %} 
+{% block additional_js %}
 <!-- DataTables -->
 <script src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
-
+<script src="{% static 'js/audio_recording.js' %}"></script>
 {% endblock additional_js %}

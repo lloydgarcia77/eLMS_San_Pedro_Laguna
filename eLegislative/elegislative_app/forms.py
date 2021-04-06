@@ -741,6 +741,33 @@ class AudioRecordingForm(forms.ModelForm):
         } 
 
 
+class AudioRecordingFormEdit(forms.ModelForm):
+    class Meta:
+        model = models.AudioRecording
+        exclude = ("date_uploaded", "size", "length",)
+    
+    def __init__(self, *args, **kwargs):
+        super(AudioRecordingForm, self).__init__(*args, **kwargs)
+
+        self.fields['name'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Name',
+            'required': 'required',
+        }
+
+        self.fields['description'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Description',
+            'required': 'required',
+        } 
+        self.fields['remarks'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Remarks',
+            'required': 'required',
+        } 
 class MessageForm(forms.ModelForm):
     class Meta:
         model = models.MessagesModel
@@ -798,4 +825,81 @@ class WebExForm(forms.ModelForm):
             'class': 'form-control',
             'placeholder': 'Remarks',
             'required': 'required',
+        }
+
+class OrderOfBusinessForm(forms.ModelForm):
+    class Meta:
+        model = models.OrderOfBusiness
+        exclude = ("slug", "date_filed","status","is_signed","hard_copy")
+    
+    def __init__(self, *args, **kwargs):
+        super(OrderOfBusinessForm, self).__init__(*args, **kwargs)
+
+        self.fields['no'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Order of business #',
+            'required': 'required',
+        }
+
+        self.fields['title'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Title',
+            'required': 'required',
+        }
+
+        self.fields['version'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Version',
+            'required': 'required',
+        } 
+
+        self.fields['content'].widget.attrs = { 
+            'id': 'compose_textarea',
+            'class': 'form-control', 
+            'style': 'height: 300px',
+            'required': 'required',
+        }
+
+class OrderOfBusinessEditForm(forms.ModelForm):
+    class Meta:
+        model = models.OrderOfBusiness
+        exclude = ("slug", "date_filed",)
+    
+    def __init__(self, *args, **kwargs):
+        super(OrderOfBusinessEditForm, self).__init__(*args, **kwargs)
+
+        self.fields['no'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Order of business #',
+            'required': 'required',
+        }
+
+        self.fields['title'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Title',
+            'required': 'required',
+        }
+
+        self.fields['version'].widget.attrs = {
+            'type': 'text',
+            'class': 'form-control',
+            'placeholder': 'Version',
+            'required': 'required',
+        } 
+
+        self.fields['content'].widget.attrs = { 
+            'id': 'compose_textarea',
+            'class': 'form-control', 
+            'style': 'height: 300px',
+            'required': 'required',
+        }
+
+        self.fields['status'].widget.attrs = { 
+            'class': 'form-control select2', 
+            'style': 'width: 100%', 
         }
