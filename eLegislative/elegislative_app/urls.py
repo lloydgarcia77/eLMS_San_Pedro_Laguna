@@ -97,7 +97,9 @@ urlpatterns = [
     # Audio Recording
     path('audio-recording/', views.audio_recording, name="audio_recording"), 
     path('audio-recording/create-audio-recording', views.create_audio_recording, name="create_audio_recording"), 
-    
+    path('audio-recording/edit-audio-recording/<int:id>', views.edit_audio_recording, name="edit_audio_recording"), 
+    path('audio-recording/delete-audio-recording/<int:id>', views.delete_audio_recording, name="delete_audio_recording"), 
+
     # Speech Recognition
     path('speech-recognition/', views.speech_recognition, name="speech_recognition"), 
 

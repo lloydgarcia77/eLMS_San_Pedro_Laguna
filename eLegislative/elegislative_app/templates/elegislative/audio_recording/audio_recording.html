@@ -54,9 +54,8 @@ e-Legislative Audio Recording
             <small>Manage audio recording</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{% url 'elegislative:dashboard_page' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li><a href="{% url 'elegislative:audio_recording' %}">audio recording</a></li>
-            <li class="active">create audio recording</li>
+            <li><a href="{% url 'elegislative:dashboard_page' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li> 
+            <li class="active">Create audio recording</li>
         </ol>
     </section>
     <section class="content">
@@ -94,10 +93,10 @@ e-Legislative Audio Recording
                                 {% for a in audio %}
                                 <tr>
                                     <td>{{ a.id }}</td>
-                                    <td>{{ a.name }}</td>
+                                    <td>{{ a.name }} {{a.audio_file.name}}</td>
                                     <td>{{ a.description }}</td>
                                     <td>{{ a.remarks }}</td>
-                                    <td>{{ a.size }}</td>
+                                    <td>{{ a.audio_file.size|filesizeformat }}</td>
                                     <td>{{ a.length }}</td>
                                     <td>{{ a.date_uploaded }}</td>
                                     <td>
@@ -106,9 +105,9 @@ e-Legislative Audio Recording
                                         </audio>
                                     </td>
                                     <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-warning btn-flat btn-edit" data-toggle="tooltip" title="Edit" data-url=""><i class="fa fa-edit"></i></button>
-                                            <button type="button" class="btn btn-danger btn-flat btn-delete" data-toggle="tooltip" title="Delete" data-url=""><i class="fa fa-trash"></i></button>                                                
+                                        <div class="btn-group"> 
+                                            <a href="{{ a.get_absolute_url }}" class="btn btn-warning btn-flat btn-edit" data-toggle="tooltip" title="Edit"  ><i class="fa fa-edit"></i></a> 
+                                            <button type="button" class="btn btn-danger btn-flat delete" data-toggle="tooltip" title="Delete" data-url="{% url 'elegislative:delete_audio_recording' a.id %}"><i class="fa fa-trash"></i></button>                                                
                                         </div>
                                     </td>
                                 </tr>

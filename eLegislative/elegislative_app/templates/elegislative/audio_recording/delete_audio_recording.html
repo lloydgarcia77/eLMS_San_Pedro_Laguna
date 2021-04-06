@@ -1,0 +1,15 @@
+<form class="delete-audio" method="POST" data-url="{% url 'elegislative:delete_audio_recording' audio.id %}">
+    {% csrf_token %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Delete audio file</h4>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure that you want to delete this audio file? <b style="word-wrap: break-word">{{audio.audio_file.name }}</b></p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+      </div>
+</form>

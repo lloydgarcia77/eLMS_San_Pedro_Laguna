@@ -38,6 +38,7 @@ from scipy.io import wavfile
 import os
 
 from django.conf import settings
+import librosa
 
 # key id encryption
 def encrypt_key(txt):
@@ -2586,6 +2587,48 @@ def create_audio_recording(request, *args, **kwargs):
 def edit_audio_recording(request, *args, **kwargs):
     template_name = "elegislative/audio_recording/edit_audio_recording.html"
     user = get_object_or_404(models.User, email=request.user.email) 
+    audio = get_object_or_404(models.AudioRecording, id=kwargs['id'])
+    if request.method == 'GET':
+        form = forms.AudioRecordingFormEdit(request.GET or None, instance=audio)
+    elif request.method == 'POST': 
+        form = forms.AudioRecordingFormEdit(request.POST or None, request.FILES, instance=audio)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            samples, sample_rate = librosa.load(instance.audio_file, sr=44100)
+            duration = librosa.get_duration(y=samples, sr=sample_rate)
+            duration = round(duration,2)
+            instance.length = duration
+            instance.save() 
+            return HttpResponseRedirect(reverse("elegislative:audio_recording"))
+    context = {
+        'user': user, 
+        'form': form,
+        'notifications':kwargs['notifications'],
+    }
+
+    return render(request, template_name, context)
+
+@login_required 
+@authorize 
+def delete_audio_recording(request, *args, **kwargs):
+    data = dict()
+    template_name = "elegislative/audio_recording/delete_audio_recording.html"
+    user = get_object_or_404(models.User, email=request.user.email) 
+    audio = get_object_or_404(models.AudioRecording, id=kwargs['id'])
+    if request.is_ajax():
+        if request.method == 'GET':
+            context = {
+                'user': user,     
+                'audio': audio, 
+            }
+            data['html_form'] = render_to_string(template_name, context, request) 
+        elif request.method == 'POST':
+            audio.delete()
+            data['form_is_valid'] = True
+
+        return JsonResponse(data)
+    else:
+        raise Http404()
 
 """
 [END] -> Audio Recording features

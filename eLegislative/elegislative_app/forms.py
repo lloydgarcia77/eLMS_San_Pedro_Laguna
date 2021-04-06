@@ -747,7 +747,7 @@ class AudioRecordingFormEdit(forms.ModelForm):
         exclude = ("date_uploaded", "size", "length",)
     
     def __init__(self, *args, **kwargs):
-        super(AudioRecordingForm, self).__init__(*args, **kwargs)
+        super(AudioRecordingFormEdit, self).__init__(*args, **kwargs)
 
         self.fields['name'].widget.attrs = {
             'type': 'text',
