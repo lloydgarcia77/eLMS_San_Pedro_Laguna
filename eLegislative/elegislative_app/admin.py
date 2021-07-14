@@ -187,3 +187,13 @@ class OrderOfBusinessAdmin(ImportExportModelAdmin):
     ordering = ["no", "version", "author"]
 
 admin.site.register(models.OrderOfBusiness, OrderOfBusinessAdmin)
+
+
+class AttendanceAdmin(ImportExportModelAdmin):
+    list_display = ("id", "attendance_user_fk", "is_present", "time_triggered", "date_filed")
+    list_editable = ("is_present",)
+    list_per_page = 10
+    search_fields = ("id", "time_triggered", "date_filed")
+    list_filter = ("is_present",) 
+
+admin.site.register(models.AttendanceModel, AttendanceAdmin)

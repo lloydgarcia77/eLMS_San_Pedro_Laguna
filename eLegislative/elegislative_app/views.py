@@ -115,7 +115,7 @@ def login_page(request):
                 # https://stackoverflow.com/questions/35796195/how-to-redirect-to-previous-page-in-django-after-post-request/35796330
                 # https://stackoverflow.com/questions/806835/django-redirect-to-previous-page-after-login
                 # https://stackoverflow.com/questions/38431166/redirect-to-next-after-login-in-django
-                request.session.set_expiry(request.session.get_expiry_age())  
+                # request.session.set_expiry(request.session.get_expiry_age())  
                 previous_page = request.GET.get('next',reverse("elegislative:dashboard_page"))
                 return HttpResponseRedirect(previous_page)
                 # return HttpResponseRedirect(reverse("elegislative:dashboard_page"))
@@ -2806,3 +2806,80 @@ def print_order_of_business(request, *args, **kwargs):
 """
 
 
+@login_required
+@authorize
+@get_notification
+def attendance(request, *args, **kwargs):
+    template_name = "elegislative/attendance/attendance.html"
+    user = get_object_or_404(models.User, email=request.user.email)
+    attendance_list = models.AttendanceModel.objects.all().order_by('-id')
+     
+
+    context = {
+        'user': user, 
+        'attendance_list': attendance_list,
+    }
+
+    return render(request, template_name, context)
+
+@login_required
+@authorize
+@get_notification
+def create_attendance(request, *args, **kwargs):
+    template_name = "elegislative/attendance/create_attendance.html"
+    user = get_object_or_404(models.User, email=request.user.email) 
+    users = models.User.objects.all().order_by('-id').filter(Q(is_active=True))
+
+    list_of_users = [e.email for e in users]
+    """
+    list1 = [1, 2, 4]
+    list2 = [4, 5, 6]
+
+    set_difference = set(list1) - set(list2)
+    list_difference = list(set_difference)
+
+    print(list_difference)
+    OUTPUT
+    [1, 2]
+    """
+    now = datetime.now()
+    # July 14, 2021, 4:18 p.m.
+    # now = now.strftime("%B %d, %Y")
+    now = now.strftime("%Y-%m-%d")  
+    if request.method == "POST": 
+        list_of_presents = request.POST.getlist("present")  
+        for item in list_of_users:
+            u = get_object_or_404(models.User, email=item)
+            is_present = True if item in list_of_presents else False
+            new, existing = models.AttendanceModel.objects.update_or_create(date_filed=now, attendance_user_fk=u, defaults={'is_present':is_present,})  
+ 
+        return HttpResponseRedirect(reverse_lazy("elegislative:attendance"))
+    context = {
+        'user': user,  
+        'users': users,
+    }
+
+    return render(request, template_name, context)
+
+
+
+@roles(is_arocc_manager=True)
+@authorize
+@login_required
+def delete_attendance(request, id):
+    data = dict()
+    template_name = "elegislative/attendance/delete_attendance.html"      
+    attendance = get_object_or_404(models.AttendanceModel, id=id)  
+    if request.is_ajax():
+        if request.method == 'GET':
+            context = {
+                'attendance': attendance,
+            }
+        
+            data['html_form'] = render_to_string(template_name, context, request)
+        elif request.method == 'POST':   
+            data['form_is_valid'] = True
+            attendance.delete()
+        return JsonResponse(data)
+    else:
+        raise Http404()

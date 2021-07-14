@@ -236,7 +236,7 @@ NOTIFICATION_TAGS = (
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 600 # set just 10 seconds to test
+SESSION_COOKIE_AGE = 1200 # set just 10 seconds to test
 SESSION_SAVE_EVERY_REQUEST = True
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = None

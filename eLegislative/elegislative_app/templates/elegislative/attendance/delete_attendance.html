@@ -1,0 +1,20 @@
+<form method="POST" class="delete-attendance" data-url="{% url 'elegislative:delete_attendance' attendance.id %}">
+    {% csrf_token %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Delete attendance </h4>
+    </div>
+    <div class="modal-body">
+        <p>
+            Are you sure that you want to delete this attendance permanently?  
+        </p>
+        <p>
+            User Email: <b>{{attendance.attendance_user_fk.email}}</b> where Date Filed: <b>{{attendance.date_filed}}</b>  
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+</form>

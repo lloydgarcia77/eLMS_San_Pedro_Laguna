@@ -452,3 +452,10 @@ class AudioRecording(models.Model):
     def get_absolute_url(self):
         return reverse("elegislative:edit_audio_recording", args=[self.id,])
 
+class AttendanceModel(models.Model):
+    attendance_user_fk = models.ForeignKey(User, on_delete=models.CASCADE, related_name="attendance_user_fk")
+    is_present = models.BooleanField(default=False)
+    time_triggered = models.DateTimeField(auto_now=True)
+    date_filed = models.DateField(auto_now_add=True)
+    def __str__(self):
+        return str(self.attendance_user_fk.email)
