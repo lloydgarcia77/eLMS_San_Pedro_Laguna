@@ -320,16 +320,30 @@ e-Legislative Dashboard
       </li> -->
       {% endblock nav_cc %}
 
-      {% block nav_attendance_monitoring %}
+      {% if request.user.is_superuser %}
+        {% block nav_attendance_monitoring %}
+        <li>
+          <a href="" data-toggle="tooltip" title="Attendance Monitoring">
+            <i class="fa fa-calendar-check-o"></i> <span>Attendance</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green"></small>
+            </span>
+          </a>
+        </li>
+        {% endblock nav_attendance_monitoring %}
+      {% endif %}
+      
+
+      {% block nav_audio_recording %}
       <li>
-        <a href="" data-toggle="tooltip" title="Attendance Monitoring">
-          <i class="fa fa-calendar-check-o"></i> <span>Attendance</span>
+        <a href="{% url 'elegislative:audio_recording' %}" data-toggle="tooltip" title="Audio Recording">
+          <i class="fa fa-fw fa-file-audio-o"></i> <span>Audio Recording</span>
           <span class="pull-right-container">
             <small class="label pull-right bg-green"></small>
           </span>
         </a>
       </li>
-      {% endblock nav_attendance_monitoring %}
+      {% endblock nav_audio_recording %}
 
       {% block nav_trash %}
       <li>
@@ -343,26 +357,17 @@ e-Legislative Dashboard
       {% endblock nav_trash %}
 
       {% block nav_speech_recognition %}
-      <li> 
+      <!-- <li> 
         <a href="{% url 'elegislative:speech_recognition' %}" data-toggle="tooltip" title="Speech Recognition">
           <i class="fa fa-fw fa-file-word-o"></i> <span>Speech Recognition</span>
           <span class="pull-right-container">
             <small class="label pull-right bg-green"></small>
           </span>
         </a>
-      </li>
+      </li> -->
       {% endblock nav_speech_recognition %}
 
-      {% block nav_audio_recording %}
-      <!-- <li>
-        <a href="{% url 'elegislative:audio_recording' %}" data-toggle="tooltip" title="Audio Recording">
-          <i class="fa fa-fw fa-file-audio-o"></i> <span>Audio Recording</span>
-          <span class="pull-right-container">
-            <small class="label pull-right bg-green"></small>
-          </span>
-        </a>
-      </li> -->
-      {% endblock nav_audio_recording %}
+  
 
 
 

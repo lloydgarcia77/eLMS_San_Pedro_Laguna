@@ -271,6 +271,7 @@ def add_notification(request, url_target, message, tags):
 
     url = reverse_lazy(url_target) 
     
+    email_list = []
     for u in users:
         models.NotificationsModel.objects.create(
             sender=user,
@@ -278,7 +279,17 @@ def add_notification(request, url_target, message, tags):
             message=message,
             tags=tags,
             url=url,
-        ) 
+        )  
+        email_list.append(u.email)
+    
+    full_url = request.build_absolute_uri(reverse_lazy(url_target, args=())) 
+    send_mail(
+        "E-Legislative Message Notification Alert",
+        f'{message} link: {full_url}',
+        settings.EMAIL_FROM,
+        email_list,
+        fail_silently=False,
+    )
 
 def delete_notification(request, id):
     data = dict()
@@ -2049,10 +2060,7 @@ def create_message(request, *args, **kwargs):
             for r in receivers:
                 receiver = get_object_or_404(models.User, email=r) 
                 content = form.cleaned_data.get("content")
-                subject = form.cleaned_data.get("subject")
-
-
-                
+                subject = form.cleaned_data.get("subject") 
 
                 models.MessagesModel.objects.create(
                     sender=user,
@@ -2070,6 +2078,7 @@ def create_message(request, *args, **kwargs):
                 soup = BeautifulSoup(content, "html.parser") 
 
                 m_content = soup.get_text()
+
                 send_mail(
                     subject,
                     m_content,
