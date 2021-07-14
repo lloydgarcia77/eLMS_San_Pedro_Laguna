@@ -48,5 +48,5 @@ urlpatterns = [
     path('register/', views.register_page, name="register"), 
 
     # Application
-    path('elegislative/', include('elegislative_app.urls')),
+    path('', include('elegislative_app.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

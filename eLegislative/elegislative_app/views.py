@@ -40,6 +40,9 @@ import os
 from django.conf import settings
 import librosa
 
+from django.core.mail import send_mail
+from bs4 import BeautifulSoup
+
 # key id encryption
 def encrypt_key(txt):
 
@@ -2035,6 +2038,8 @@ def create_message(request, *args, **kwargs):
     unread_messages_count = models.MessagesModel.objects.all().filter(Q(receiver=user),Q(is_read=False)).count()
     reciepients = models.User.objects.all().filter(~Q(email=user),Q(is_active=True))  
     sent_messages = models.SentMessagesModel.objects.all().filter(Q(sender=user))
+
+    
     if request.method == 'GET':
         form = forms.MessageForm(request.GET or None)
     elif request.method == 'POST':
@@ -2045,6 +2050,10 @@ def create_message(request, *args, **kwargs):
                 receiver = get_object_or_404(models.User, email=r) 
                 content = form.cleaned_data.get("content")
                 subject = form.cleaned_data.get("subject")
+
+
+                
+
                 models.MessagesModel.objects.create(
                     sender=user,
                     receiver=receiver,
@@ -2057,6 +2066,18 @@ def create_message(request, *args, **kwargs):
                     subject=subject,
                     content=content, 
                 ) 
+
+                soup = BeautifulSoup(content, "html.parser") 
+
+                m_content = soup.get_text()
+                send_mail(
+                    subject,
+                    m_content,
+                    user.email,
+                    [r],
+                    fail_silently=False,
+                )
+
             return HttpResponseRedirect(reverse_lazy("elegislative:messages"))   
 
     context = {
@@ -2107,7 +2128,7 @@ def delete_messages(request, *args, **kwargs):
             json_request = json.loads(request.body)
             id_list = json_request["id_list"]
             for item in id_list:
-                message = get_object_or_404(models.MessagesModel, Q(receive=user),id=int(item))
+                message = get_object_or_404(models.MessagesModel, Q(receiver=user),id=int(item))
                 message.delete()
             data['status'] = True
         
@@ -2774,3 +2795,5 @@ def print_order_of_business(request, *args, **kwargs):
 """
 [END] -> Order of business features
 """
+
+

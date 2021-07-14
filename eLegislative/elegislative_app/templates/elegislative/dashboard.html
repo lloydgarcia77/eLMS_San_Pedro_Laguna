@@ -307,21 +307,45 @@ e-Legislative Dashboard
         {% endblock nav_webex %}
       {% endif %}
       
+     
+
+      {% block nav_cc %}
+      <!-- <li>
+        <a href="" data-toggle="tooltip" title="Citizen Charter">
+          <i class="fa fa-money"></i> <span>Citizen Charter</span>
+          <span class="pull-right-container">
+            <small class="label pull-right bg-green"></small>
+          </span>
+        </a>
+      </li> -->
+      {% endblock nav_cc %}
+
+      {% block nav_attendance_monitoring %}
+      <li>
+        <a href="" data-toggle="tooltip" title="Attendance Monitoring">
+          <i class="fa fa-calendar-check-o"></i> <span>Attendance</span>
+          <span class="pull-right-container">
+            <small class="label pull-right bg-green"></small>
+          </span>
+        </a>
+      </li>
+      {% endblock nav_attendance_monitoring %}
+
       {% block nav_trash %}
       <li>
         <a href="{% url 'elegislative:trash' %}" data-toggle="tooltip" title="Trash">
-          <i class="fa fa-trash text-red"></i> <span>Trash</span>
+          <i class="fa fa-trash"></i> <span>Trash</span>
           <span class="pull-right-container">
             <small class="label pull-right bg-green"></small>
           </span>
         </a>
       </li>
       {% endblock nav_trash %}
-      
+
       {% block nav_speech_recognition %}
       <li> 
         <a href="{% url 'elegislative:speech_recognition' %}" data-toggle="tooltip" title="Speech Recognition">
-          <i class="fa fa-fw fa-file-word-o text-orange"></i> <span>Speech Recognition</span>
+          <i class="fa fa-fw fa-file-word-o"></i> <span>Speech Recognition</span>
           <span class="pull-right-container">
             <small class="label pull-right bg-green"></small>
           </span>
@@ -330,14 +354,14 @@ e-Legislative Dashboard
       {% endblock nav_speech_recognition %}
 
       {% block nav_audio_recording %}
-      <li>
+      <!-- <li>
         <a href="{% url 'elegislative:audio_recording' %}" data-toggle="tooltip" title="Audio Recording">
-          <i class="fa fa-fw fa-file-audio-o text-green"></i> <span>Audio Recording</span>
+          <i class="fa fa-fw fa-file-audio-o"></i> <span>Audio Recording</span>
           <span class="pull-right-container">
             <small class="label pull-right bg-green"></small>
           </span>
         </a>
-      </li>
+      </li> -->
       {% endblock nav_audio_recording %}
 
 

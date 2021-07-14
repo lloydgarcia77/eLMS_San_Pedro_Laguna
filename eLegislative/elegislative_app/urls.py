@@ -5,7 +5,8 @@ app_name = "elegislative"
 
 urlpatterns = [
     # Dashboard
-    path('dashboard/', views.dashboard_page, name="dashboard_page"),
+    # path('dashboard/', views.dashboard_page, name="dashboard_page"),
+    path('', views.dashboard_page, name="dashboard_page"),
     
     # search
     path('search/', views.search, name="search"),

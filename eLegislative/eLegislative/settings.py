@@ -100,6 +100,17 @@ DATABASES = {
 
 # DATABASES = {
 #     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'elms',
+#         'USER': 'lloydgarcia77',
+#         'PASSWORD': 'qweQWE123!',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'elegislative_system_db',
 #         'USER': 'root',
@@ -152,7 +163,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
-
+# https://docs.djangoproject.com/en/3.2/releases/3.2/
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -218,8 +230,8 @@ NOTIFICATION_TAGS = (
     ('Announcement','Announcement'),
 )
 # https://pypi.org/project/dj-database-url/
-db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'].update(db_from_env) 
+# db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# DATABASES['default'].update(db_from_env) 
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -228,4 +240,4 @@ SESSION_COOKIE_AGE = 600 # set just 10 seconds to test
 SESSION_SAVE_EVERY_REQUEST = True
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
-# DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880 # 5MB
+# DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880 # 5MB 

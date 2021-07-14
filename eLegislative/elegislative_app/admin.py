@@ -7,7 +7,7 @@ from django import forms
 admin.site.site_header = 'e-Legislative Super Administrator'
 admin.site.index_title = 'Super Administrator Page'
 admin.site.site_title = 'Super Administrator Panel'
-admin.site.site_url = "/elegislative/dashboard/"
+# admin.site.site_url = "/elegislative/dashboard/"
 
   
 # Custom user model and admin
